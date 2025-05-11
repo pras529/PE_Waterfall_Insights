@@ -3,6 +3,7 @@
 
 **Project Goal:** To develop an analytical tool using Python, Dash, and Streamlit that allows users to model, analyze, and visualize private equity waterfall distributions under various scenarios. This tool aims to provide clarity and actionable insights into how fund performance and distribution structures impact returns for both Limited Partners (LPs) and General Partners (GPs).
 
+![PE Waterfall Insights & Modeler](https://via.placeholder.com/300x150/007bff/ffffff?text=PE+Waterfall+Modeler%0A[Bars+|+Arrow+|+Insight])
 ---
 
 ## Table of Contents
