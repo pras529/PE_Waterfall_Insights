@@ -39,4 +39,4 @@ if __name__ == '__main__':
     # import os
     # sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
     # from core.waterfall_logic import some_function # Example import
-    app.run_server(debug=True)
+    app.run(debug=True)
