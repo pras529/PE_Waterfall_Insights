@@ -2,8 +2,7 @@ from .financial_utils import calculate_irr, calculate_moic
 
 
 def calculate_european_waterfall(
-        lp_commitment_total,  # Total LP commitment (used for pref calculation base)
-        gp_commitment_total,  # Total GP commitment (used for their capital base)
+        lp_commitment,  # Total LP commitment (used for pref calculation base)
         preferred_return_pct,  # Annual preferred return (e.g., 0.08 for 8%)
         gp_catch_up_pct,  # GP catch-up proportion (e.g., 1.0 for 100%)
         carried_interest_gp_share_pct,  # GP's share in final split (e.g., 0.20 for 20%)
@@ -35,7 +34,7 @@ def calculate_european_waterfall(
     # Total preferred return due to LPs over the fund life before GP catch-up/carry.
     # This is a simplification; real pref is often per annum on outstanding capital.
     # Here, we'll calculate it as a hurdle: X% of total LP capital called.
-    total_lp_pref_due = total_lp_capital_called * preferred_return_pct
+    total_lp_pref_due = lp_commitment * preferred_return_pct
     # If your pref_return_pct is annual, and you have average fund life, you might do:
     # total_lp_pref_due = total_lp_capital_called * preferred_return_pct * avg_fund_life_years
     # For this example, we'll treat preferred_return_pct as the total hurdle percentage.

@@ -1,7 +1,0 @@
-DealID,Period,Date,Investment,Proceeds
-DealA,0,2020-03-01,10,0
-DealB,1,2020-09-01,15,0
-DealA,2,2021-06-01,0,25
-DealC,3,2021-10-01,20,0
-DealB,4,2022-05-01,0,30
-DealC,5,2023-02-01,0,35

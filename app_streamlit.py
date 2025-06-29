@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+from src.core.waterfall_logic import calculate_european_waterfall
 
 
 st.set_page_config(page_title="PE Waterfall Modeler - Streamlit", layout="wide")
@@ -34,29 +35,25 @@ def main():
             cash_flows_df = pd.read_csv(uploaded_file)
             st.write("Uploaded Cash Flows Preview:")
             st.dataframe(cash_flows_df.head())
-
             if st.button("Calculate Waterfall"):
                 with st.spinner("Calculating..."):
-                    # --- Placeholder for actual calculation ---
-                    # This is where you would call your core logic from src.core.waterfall_logic
-                    # Example:
-                    # if fund_model_type == "European (Whole Fund)":
-                    #     results = calculate_european_waterfall(
-                    #         lp_commitment, gp_commitment, preferred_return_pct,
-                    #         gp_catch_up_pct, carried_interest_gp_share_pct, cash_flows_df
-                    #     )
-                    # else:
-                    #     results = calculate_american_waterfall(...) # Define this function
+                    if fund_model_type == "European (Whole Fund)":
+                       results = calculate_european_waterfall(
+                        lp_commitment=lp_commitment,
+                        preferred_return_pct=preferred_return_pct,
+                        gp_catch_up_pct=gp_catch_up_pct,
+                        carried_interest_gp_share_pct=carried_interest_gp_share_pct,
+                        cash_flows_df=cash_flows_df
+                    )
+                    else:
+                        st.warning("American (Deal-by-Deal) model not implemented yet.")
+                        results = None
 
-                    # st.success("Calculation Complete!")
-                    # st.write("Results:")
-                    # st.json(results) # Display results (e.g., as JSON or in plots)
-
-                    # --- Placeholder for plots ---
-                    # fig_dist_flow = ... # Create a Plotly figure
-                    # st.plotly_chart(fig_dist_flow)
-                    st.info("Calculation logic and plotting to be implemented.")
-                    st.balloons()
+                    if results is not None:
+                        st.success("Calculation Complete!")
+                        st.write("Results:")
+                        st.json(results)
+                        st.balloons()
 
 
         except Exception as e:
@@ -64,7 +61,6 @@ def main():
     else:
         st.info("Please upload a cash flow CSV file to proceed.")
 
-    # You can modularize parts of the Streamlit app into src/components_streamlit/
 
 
 if __name__ == '__main__':
