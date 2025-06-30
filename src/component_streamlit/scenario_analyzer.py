@@ -5,7 +5,7 @@ import copy  # To deepcopy parameters for scenarios
 # Attempt to import core logic
 try:
     from src.core.waterfall_logic import calculate_european_waterfall  # Assuming European for simplicity here
-    from src.core.financial_utils import calculate_moic
+    #from src.core.financial_utils import calculate_moic
 except ImportError:
     st.warning("Could not import core logic for scenario analyzer.")
 
@@ -147,7 +147,7 @@ def display_scenario_analyzer():
             st.dataframe(results_df)
 
             # Placeholder for comparative charts
-            # st.bar_chart(results_df.set_index('Scenario Name')[['LP MOIC', 'GP MOIC']])
+            st.bar_chart(results_df.set_index('Scenario Name')[['LP MOIC', 'GP MOIC']])
 
 
 if __name__ == '__main__':
