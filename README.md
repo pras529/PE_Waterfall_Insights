@@ -1,8 +1,7 @@
 # PE Waterfall Insights & Modeler
 <img src="src/assets/dashboard.png" alt="DASHBOARD Streamlit" width="800" height="500"/>
-<img src="src/assets/dashboard1.png" alt="DASHBOARD Dash" width = "800" height = "500"/>
 
-**Project Goal:** To develop an analytical tool using Python, Dash, and Streamlit that allows users to model, analyze, and visualize private equity waterfall distributions under various scenarios. This tool aims to provide clarity and actionable insights into how fund performance and distribution structures impact returns for both Limited Partners (LPs) and General Partners (GPs).
+**Project Goal:** To develop an analytical tool using Python and Streamlit that allows users to model, analyze, and visualize private equity waterfall distributions under various scenarios. This tool aims to provide clarity and actionable insights into how fund performance and distribution structures impact returns for both Limited Partners (LPs) and General Partners (GPs).
 
 ![PE Waterfall Insights & Modeler](https://via.placeholder.com/300x150/007bff/ffffff?text=PE+Waterfall+Modeler%0A[Bars+|+Arrow+|+Insight])
 ---
@@ -63,11 +62,8 @@ The **PE Waterfall Insights & Modeler** is designed to demystify the complex mec
     *   Pandas
     *   NumPy
 *   **Web Application & Dashboarding:**
-    *   **Dash by Plotly:** For creating sophisticated, interactive web-based dashboards and analytical applications.
-    *   **Streamlit:** For rapidly building and deploying data-centric web applications with a focus on ease of use.
-    *   
+    *   **Streamlit:** For rapidly building and deploying data-centric web applications with a focus on ease of use.  
 *   **Visualization Libraries:**
-    *   Plotly Express & Plotly Graph Objects (used by Dash)
     *   Streamlit's native charting capabilities (which can also wrap Plotly, Matplotlib, etc.)
 *   **Version Control:** Git & GitHub
 
@@ -141,19 +137,11 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 4.  **Run the application:**
 
-    *   **For Dash App:**
-        ```bash
-        python app.py
-        ```
-        Then open your browser to `http://127.0.0.1:8050/` (or the port specified in your Dash app).
-
     *   **For Streamlit App:**
         ```bash
         streamlit run app_streamlit.py
         ```
         Streamlit will typically open the app automatically in your browser or provide a local URL.
-
-    
 
 ---
 
