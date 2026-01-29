@@ -1,14 +1,24 @@
 import pandas as pd
 import streamlit as st
-from src.core.waterfall_logic import calculate_european_waterfall
+from src.core.waterfall_logic import calculate_european_waterfall, calculate_american_waterfall
+
+try:
+    import plotly.express as px
+except ImportError:
+    px = None
+
+try:
+    import plotly.graph_objects as go
+except ImportError:
+    go = None
 
 
-st.set_page_config(page_title="PE Waterfall Modeler - Streamlit", layout="wide")
+st.set_page_config(page_title="PE Waterfall Modeler", layout="wide")
 
 
 def main():
-    st.title("PE Waterfall Insights & Modeler (Streamlit Version)")
-    st.markdown("Welcome to the Streamlit interface for modeling private equity waterfalls.")
+    st.title("PE Waterfall Insights & Modeler")
+    st.markdown("Welcome to the interface for modeling private equity waterfalls.")
 
     # --- Sidebar for Inputs ---
     st.sidebar.header("Fund Parameters")
@@ -38,22 +48,73 @@ def main():
             if st.button("Calculate Waterfall"):
                 with st.spinner("Calculating..."):
                     if fund_model_type == "European (Whole Fund)":
-                       results = calculate_european_waterfall(
-                        lp_commitment=lp_commitment,
-                        preferred_return_pct=preferred_return_pct,
-                        gp_catch_up_pct=gp_catch_up_pct,
-                        carried_interest_gp_share_pct=carried_interest_gp_share_pct,
-                        cash_flows_df=cash_flows_df
-                    )
+                        results = calculate_european_waterfall(
+                            lp_commitment=lp_commitment,
+                            preferred_return_pct=preferred_return_pct,
+                            gp_catch_up_pct=gp_catch_up_pct,
+                            carried_interest_gp_share_pct=carried_interest_gp_share_pct,
+                            cash_flows_df=cash_flows_df
+                        )
                     else:
-                        st.warning("American (Deal-by-Deal) model not implemented yet.")
-                        results = None
+                        results = calculate_american_waterfall(
+                            lp_commitment=lp_commitment,
+                            preferred_return_pct=preferred_return_pct,
+                            gp_catch_up_pct=gp_catch_up_pct,
+                            carried_interest_gp_share_pct=carried_interest_gp_share_pct,
+                            cash_flows_df=cash_flows_df
+                        )
 
                     if results is not None:
                         st.success("Calculation Complete!")
                         st.write("Results:")
                         st.json(results)
                         st.balloons()
+
+                        # Pie Chart visualization of distribution tiers
+                        tiers = results.get("distribution_tiers", {}) if isinstance(results, dict) else {}
+                        if tiers:
+                            st.subheader("Distribution Breakdown (Pie)")
+                            pie_df = pd.DataFrame({"Tier": list(tiers.keys()), "Amount": list(tiers.values())})
+
+                            if px is None:
+                                st.info("Install plotly to view the pie chart visualization.")
+                            else:
+                                fig = px.pie(pie_df, names="Tier", values="Amount", hole=0.3,
+                                             title="LP/GP Distribution Tiers")
+                                fig.update_traces(textposition="inside", textinfo="percent+label")
+                                st.plotly_chart(fig, use_container_width=True)
+
+                            
+                            # Waterfall-style accumulation across tiers
+                            st.subheader("Distribution Waterfall")
+                            if go is None:
+                                st.info("Install plotly to view the waterfall visualization.")
+                            else:
+                                wf_df = pie_df.copy()
+                                waterfall_fig = go.Figure(
+                                    go.Waterfall(
+                                        name="Distribution",
+                                        orientation="v",
+                                        x=wf_df["Tier"],
+                                        measure=["relative"] * len(wf_df),
+                                        y=wf_df["Amount"],
+                                    )
+                                )
+                                waterfall_fig.update_layout(title="Waterfall Allocation by Tier")
+                                st.plotly_chart(waterfall_fig, use_container_width=True)
+
+                        # Glossary for common terms
+                        glossary_rows = [
+                            {"Term": "IRR", "Definition": "Internal Rate of Return"},
+                            {"Term": "MOIC", "Definition": "Multiple on Invested Capital"},
+                            {"Term": "LP", "Definition": "Limited Partner"},
+                            {"Term": "GP", "Definition": "General Partner"},
+                            {"Term": "Preferred Return", "Definition": "Minimum return owed to LPs before carry"},
+                            {"Term": "Catch-up", "Definition": "Phase where GP receives most cash until carry share is met"},
+                            {"Term": "Carried Interest", "Definition": "GP share of profits after hurdles"},
+                        ]
+                        st.subheader("Glossary")
+                        st.table(pd.DataFrame(glossary_rows))
 
 
         except Exception as e:
