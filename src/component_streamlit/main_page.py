@@ -28,7 +28,7 @@ def display_main_page():
         st.subheader("Fund Parameters")
         fund_model_type = st.selectbox(
             "Waterfall Model Type",
-            ["European (Whole Fund)", "American (Deal-by-Deal)"],  # American is still placeholder
+            ["European (Whole Fund)", "American (Deal-by-Deal)"] ,
             key="main_model_type"
         )
         # Using LP commitment for pref base, GP commitment for their capital tracking
@@ -77,15 +77,20 @@ def display_main_page():
                     results = None
                     if fund_model_type == "European (Whole Fund)":
                         results = calculate_european_waterfall(
-                            lp_commitment_total=lp_commitment_total,  # Pass the total commitment
-                            gp_commitment_total=gp_commitment_total,  # Pass the total commitment
+                            lp_commitment=lp_commitment_total,
                             preferred_return_pct=preferred_return_pct,
                             gp_catch_up_pct=gp_catch_up_pct,
                             carried_interest_gp_share_pct=carried_interest_gp_share_pct,
                             cash_flows_df=cash_flows_df
                         )
                     elif fund_model_type == "American (Deal-by-Deal)":
-                        results = calculate_american_waterfall()  # Placeholder
+                        results = calculate_american_waterfall(
+                            lp_commitment=lp_commitment_total,
+                            preferred_return_pct=preferred_return_pct,
+                            gp_catch_up_pct=gp_catch_up_pct,
+                            carried_interest_gp_share_pct=carried_interest_gp_share_pct,
+                            cash_flows_df=cash_flows_df
+                        )
 
                     if results:
                         if "error" in results:
