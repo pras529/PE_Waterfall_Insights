@@ -2,6 +2,8 @@ numpy-financial
 numpy
 pandas
 streamlit
+altair>=4,<5
+plotly>=5
 
 
 
